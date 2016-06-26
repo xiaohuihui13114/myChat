@@ -1,0 +1,103 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.IO chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+        }
+
+        form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+        .background-div{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            opacity: .58;
+            z-index: 9999;
+        }
+        .background-content{
+            background-color: #fff;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50%;
+            max-height: 200px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="background-div">
+    <div class="background-content">
+        <input type="text" placeholder="你的名字"><button type="button">登录</button>
+    </div>
+</div>
+<ul id="messages"></ul>
+<form action="">
+    <input id="m" autocomplete="off"/>
+    <button>Send</button>
+</form>
+<!--<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>-->
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    var socket = io.connect("/");
+    $('form').submit(function () {
+        console.log($('#m').val().length);
+        console.log($('#m').val().trim());
+        console.log($('#m').val().trim().length);
+        socket.emit('news_chat', $('#m').val());
+        $('#m').val('');
+        return false;
+    });
+    socket.on('news_chat', function (msg) {
+        $('#messages').append($('<li>').text(msg));
+    });
+</script>
+
+</body>
+</html>
